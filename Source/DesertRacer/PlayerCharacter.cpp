@@ -62,6 +62,40 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 void APlayerCharacter::Move(const FInputActionValue& Value)
 {
 	FVector2D MoveActionValue = Value.Get<FVector2D>();
-	GEngine->AddOnScreenDebugMessage(1, 10.f, FColor::White, MoveActionValue.ToString());
+
+	if (CanMove)
+	{
+		// Handle movement along the Y-axis (forward/backward)
+		if (abs(MoveActionValue.Y) > 0.0f)
+		{
+			float DeltaTime = GetWorld()->DeltaRealTimeSeconds;
+
+			// Handle rotation based on the X-axis input
+			if (abs(MoveActionValue.X) > 0.0f)
+			{
+				float RotationAmount = RotationSpeed * MoveActionValue.X * DeltaTime;
+				AddActorWorldRotation(FRotator(-RotationAmount, 0.0f, 0.0f));
+			}
+
+			float FinalMovementSpeed = MovementSpeed;
+
+			// If moving backward, reduce speed
+			if (MoveActionValue.Y < 0.0f)
+			{
+				FinalMovementSpeed *= 0.5f;
+			}
+			
+			FVector CurrentLocation = GetActorLocation();
+			FVector DistanceToMove = GetActorUpVector() * FinalMovementSpeed * MoveActionValue.Y * DeltaTime;
+			FVector NewLocation = CurrentLocation + DistanceToMove;
+			
+			SetActorLocation(NewLocation);
+		}
+	}
+	else
+	{
+		// Optionally handle the case where movement is not allowed
+		UE_LOG(LogTemp, Warning, TEXT("Movement is currently disabled."));
+	}
 }
 
