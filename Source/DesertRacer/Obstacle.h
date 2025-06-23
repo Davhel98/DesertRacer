@@ -7,6 +7,7 @@
 
 #include "Components/CapsuleComponent.h"
 #include "PaperSpriteComponent.h"
+#include "DesertRacerGameMode.h"
 
 #include "Obstacle.generated.h"
 
@@ -24,6 +25,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Obstacle")
 	UPaperSpriteComponent* ObstacleSprite;
+
+	ADesertRacerGameMode* DesertRacerGameMode;
 
 protected:
 	// Called when the game starts or when spawned
