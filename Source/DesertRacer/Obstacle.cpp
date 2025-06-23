@@ -3,6 +3,8 @@
 
 #include "Obstacle.h"
 
+#include "PlayerCharacter.h"
+
 // Sets default values
 AObstacle::AObstacle()
 {
@@ -20,6 +22,8 @@ AObstacle::AObstacle()
 void AObstacle::BeginPlay()
 {
 	Super::BeginPlay();
+
+	CapsuleComp->OnComponentBeginOverlap.AddDynamic(this, &AObstacle::OverlapBegin);
 	
 }
 
@@ -28,5 +32,20 @@ void AObstacle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AObstacle::OverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	APlayerCharacter* Player = Cast<APlayerCharacter>(OtherActor);
+
+	if (IsValid(Player))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Red, "Obstacle OverlapBegin");
+		if (Player->CanMove)
+		{
+			Player->CanMove = false;
+		}
+	}
 }
 
