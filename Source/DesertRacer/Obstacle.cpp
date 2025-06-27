@@ -51,9 +51,11 @@ void AObstacle::OverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherA
 		{
 			Player->CanMove = false;
 
+			UGameplayStatics::PlaySound2D(GetWorld(), HitSound);
+
 			if (IsValid(DesertRacerGameMode))
 			{
-				DesertRacerGameMode->ResetLevel(false);
+				DesertRacerGameMode->ResetLevel(IsFinishLine);
 			}
 		}
 	}

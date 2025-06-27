@@ -8,6 +8,7 @@
 #include "Components/CapsuleComponent.h"
 #include "PaperSpriteComponent.h"
 #include "DesertRacerGameMode.h"
+#include "Sound/SoundBase.h"
 
 #include "Obstacle.generated.h"
 
@@ -25,6 +26,12 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Obstacle")
 	UPaperSpriteComponent* ObstacleSprite;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Obstacle")
+	USoundBase* HitSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Obstacle")
+	bool IsFinishLine = false;
 
 	ADesertRacerGameMode* DesertRacerGameMode;
 
